@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leslie Bolos</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🍰 Leslie Bolos</h1>
+    <div class="top-bar">
+<button class="toggle-dark" onclick="toggleDark()">🌙 Modo Escuro</button>
+</div>
+
+<div class="cart-btn" onclick="toggleCart()">
+🛒 Carrinho <span class="cart-count" id="cartCount">0</span>
+</div>
+</header>
+
+<section class="products">
+
+    <div class="container">
+
+<div class="card">
+<img src="imagens/cenoura.png">
+<div class="card-content">
+<h2>Bolo de Cenoura</h2>
+<p class="price">R$ 22,00</p>
+<button onclick="addToCart('Bolo de Cenoura', 22)">Adicionar</button>
+</div>
+</div>
+
+<div class="card">
+<img src="imagens/chocolate.png">
+<div class="card-content">
+<h2>Bolo de Chocolate</h2>
+<p class="price">R$ 22,00</p>
+<button onclick="addToCart('Bolo de Chocolate', 22)">Adicionar</button>
+</div>
+</div>
+
+<div class="card">
+<img src="imagens/milho.png">
+<div class="card-content">
+<h2>Bolo de Milho</h2>
+<p class="price">R$ 25,00</p>
+<button onclick="addToCart('Bolo de Milho', 25)">Adicionar</button>
+</div>
+</div>
+<div class="card">
+<img src="imagens/fubacomgoiabada.png">
+<div class="card-content">
+<h2>Bolo de Fubá com Goiabada</h2>
+<p class="price">R$ 25,00</p>
+<button onclick="addToCart('Bolo de Fubá com Goiabada', 25)">Adicionar</button>
+</div>
+</div>
+
+<div class="card">
+<img src="imagens/laranja.png">
+<div class="card-content">
+<h2>Bolo de Laranja</h2>
+<p class="price">R$ 20,00</p>
+<button onclick="addToCart('Bolo de Laranja', 20)">Adicionar</button>
+</div>
+</div>
+
+<div class="card">
+<img src="imagens/iogurte.png">
+<div class="card-content">
+<h2>Bolo de Iogurte</h2>
+<p class="price">R$ 20,00</p>
+<button onclick="addToCart('Bolo de Iogurte', 20)">Adicionar</button>
+</div>
+
+
+</section>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="cart-modal" id="cartModal">
+    <h2>Seu Carrinho</h2>
+    <div id="cartItems"></div>
+    <h3 id="total">Total: R$ 0,00</h3>
+
+    <div class="payment-options">
+        <p>Forma de pagamento:</p>
+        <label><input type="radio" name="pagamento" value="PIX" checked> PIX</label>
+        <label><input type="radio" name="pagamento" value="Dinheiro"> Dinheiro</label>
+    </div>
+
+    <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
