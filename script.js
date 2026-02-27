@@ -1,25 +1,52 @@
 let cart = [];
 
-function addToCart(name, price){
+// Função para alternar e salvar o Modo Escuro
+function toggleDark() {
+    const isDark = document.body.classList.toggle("dark");
+    // Salva a escolha do usuário (true ou false)
+    localStorage.setItem("darkMode", isDark);
+}
+
+// 🔒 FUNÇÃO QUE CARREGA AS PREFERÊNCIAS ASSIM QUE A PÁGINA ABRE
+document.addEventListener("DOMContentLoaded", function() {
+    // Verifica se o usuário já tinha deixado o modo escuro ativo antes
+    const darkModeSaved = localStorage.getItem("darkMode");
+
+    if (darkModeSaved === "true") {
+        document.body.classList.add("dark");
+    }
+
+    // Configuração do overlay (carrinho)
+    const overlay = document.getElementById("overlay");
+    if (overlay) {
+        overlay.addEventListener("click", toggleCart);
+    }
+});
+
+// --- FUNÇÕES DO CARRINHO (MANTIDAS) ---
+
+function addToCart(name, price) {
     let item = cart.find(i => i.name === name);
-    if(item){
+    if (item) {
         item.qty++;
     } else {
-        cart.push({name, price, qty:1});
+        cart.push({ name, price, qty: 1 });
     }
     updateCart();
 }
 
-function updateCart(){
+function updateCart() {
     const cartItems = document.getElementById("cartItems");
     const cartCount = document.getElementById("cartCount");
     const totalDisplay = document.getElementById("total");
+
+    if (!cartItems) return; // Evita erro na página "Sobre" que não tem carrinho
 
     cartItems.innerHTML = "";
     let total = 0;
     let count = 0;
 
-    cart.forEach((item, index)=>{
+    cart.forEach((item, index) => {
         total += item.price * item.qty;
         count += item.qty;
 
@@ -37,44 +64,43 @@ function updateCart(){
         `;
     });
 
-    cartCount.innerText = count;
-    totalDisplay.innerText = "Total: R$ " + total + ",00";
+    if (cartCount) cartCount.innerText = count;
+    if (totalDisplay) totalDisplay.innerText = "Total: R$ " + total + ",00";
 }
 
-function changeQty(index, change){
+function changeQty(index, change) {
     cart[index].qty += change;
-    if(cart[index].qty <= 0){
-        cart.splice(index,1);
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
     }
     updateCart();
 }
 
-function removeItem(index){
-    cart.splice(index,1);
+function removeItem(index) {
+    cart.splice(index, 1);
     updateCart();
 }
 
-function toggleCart(){
-    document.getElementById("cartModal").classList.toggle("active");
-    document.getElementById("overlay").classList.toggle("active");
+function toggleCart() {
+    const modal = document.getElementById("cartModal");
+    const overlay = document.getElementById("overlay");
+    if (modal && overlay) {
+        modal.classList.toggle("active");
+        overlay.classList.toggle("active");
+    }
 }
 
-function toggleDark(){
-    document.body.classList.toggle("dark");
-}
-
-function finalizarPedido(){
-    if(cart.length === 0){
+function finalizarPedido() {
+    if (cart.length === 0) {
         alert("Seu carrinho está vazio!");
         return;
     }
 
     let pagamento = document.querySelector('input[name="pagamento"]:checked').value;
-
     let mensagem = "Olá! Gostaria de fazer o pedido:%0A";
     let total = 0;
 
-    cart.forEach(item=>{
+    cart.forEach(item => {
         mensagem += `- ${item.name} (x${item.qty})%0A`;
         total += item.price * item.qty;
     });
@@ -84,21 +110,3 @@ function finalizarPedido(){
 
     window.open(`https://wa.me/5517992245879?text=${mensagem}`);
 }
-
-/* 🔒 GARANTE QUE O HTML CARREGOU */
-document.addEventListener("DOMContentLoaded", function(){
-
-    const overlay = document.getElementById("overlay");
-
-    if(overlay){
-        overlay.addEventListener("click", toggleCart);
-    }
-
-    document.addEventListener("keydown", function(event){
-        if(event.key === "Escape"){
-            document.getElementById("cartModal").classList.remove("active");
-            document.getElementById("overlay").classList.remove("active");
-        }
-    });
-
-});
