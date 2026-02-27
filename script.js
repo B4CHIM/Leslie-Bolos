@@ -1,30 +1,26 @@
 let cart = [];
 
-// Função para alternar e salvar o Modo Escuro
+// Função que liga/desliga o modo escuro e salva no navegador
 function toggleDark() {
     const isDark = document.body.classList.toggle("dark");
-    // Salva a escolha do usuário (true ou false)
-    localStorage.setItem("darkMode", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
-// 🔒 FUNÇÃO QUE CARREGA AS PREFERÊNCIAS ASSIM QUE A PÁGINA ABRE
+// Verifica se o modo escuro estava ligado ao carregar qualquer página
 document.addEventListener("DOMContentLoaded", function() {
-    // Verifica se o usuário já tinha deixado o modo escuro ativo antes
-    const darkModeSaved = localStorage.getItem("darkMode");
-
-    if (darkModeSaved === "true") {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
         document.body.classList.add("dark");
     }
 
-    // Configuração do overlay (carrinho)
+    // Configuração do overlay para fechar o carrinho ao clicar fora
     const overlay = document.getElementById("overlay");
     if (overlay) {
         overlay.addEventListener("click", toggleCart);
     }
 });
 
-// --- FUNÇÕES DO CARRINHO (MANTIDAS) ---
-
+// --- FUNÇÕES DO CARRINHO ---
 function addToCart(name, price) {
     let item = cart.find(i => i.name === name);
     if (item) {
@@ -40,7 +36,7 @@ function updateCart() {
     const cartCount = document.getElementById("cartCount");
     const totalDisplay = document.getElementById("total");
 
-    if (!cartItems) return; // Evita erro na página "Sobre" que não tem carrinho
+    if (!cartItems) return;
 
     cartItems.innerHTML = "";
     let total = 0;
@@ -49,7 +45,6 @@ function updateCart() {
     cart.forEach((item, index) => {
         total += item.price * item.qty;
         count += item.qty;
-
         cartItems.innerHTML += `
         <div class="cart-item">
             <strong>${item.name}</strong><br>
@@ -60,8 +55,7 @@ function updateCart() {
                 <button onclick="changeQty(${index}, 1)">+</button>
             </div>
             <button onclick="removeItem(${index})">Remover</button>
-        </div>
-        `;
+        </div>`;
     });
 
     if (cartCount) cartCount.innerText = count;
@@ -70,9 +64,7 @@ function updateCart() {
 
 function changeQty(index, change) {
     cart[index].qty += change;
-    if (cart[index].qty <= 0) {
-        cart.splice(index, 1);
-    }
+    if (cart[index].qty <= 0) cart.splice(index, 1);
     updateCart();
 }
 
@@ -95,18 +87,13 @@ function finalizarPedido() {
         alert("Seu carrinho está vazio!");
         return;
     }
-
     let pagamento = document.querySelector('input[name="pagamento"]:checked').value;
     let mensagem = "Olá! Gostaria de fazer o pedido:%0A";
     let total = 0;
-
     cart.forEach(item => {
         mensagem += `- ${item.name} (x${item.qty})%0A`;
         total += item.price * item.qty;
     });
-
-    mensagem += `%0ATotal: R$ ${total},00`;
-    mensagem += `%0AForma de pagamento: ${pagamento}`;
-
+    mensagem += `%0ATotal: R$ ${total},00%0AForma de pagamento: ${pagamento}`;
     window.open(`https://wa.me/5517992245879?text=${mensagem}`);
 }
