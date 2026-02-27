@@ -3,8 +3,8 @@
     --bg: linear-gradient(135deg, #fff1eb, #ace0f9);
     --card: #ffffff;
     --text: #000000;
-    --primary: #333; /* Laranja do Carrinho */
-    --hover: #333;
+    --primary: #333; 
+    --hover: #444;
 }
 
 .dark {
@@ -29,41 +29,23 @@ h1 {
     margin: 0;
 }
 
-/* --- BARRA SUPERIOR (MODO ESCURO) --- */
-.top-bar {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.toggle-dark {
-    padding: 10px 20px;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-    background: var(--text);
-    color: var(--card);
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-/* --- NAVEGAÇÃO SUPERIOR DIREITA (BOTÕES LARANJA) --- */
+/* --- NAVEGAÇÃO SUPERIOR (RESPONSIVA) --- */
 .nav-container {
     position: fixed;
     top: 20px;
     right: 20px;
     display: flex;
-    gap: 12px;
+    gap: 10px;
     z-index: 1001;
 }
 
-/* Estilo unificado para Produtos, Sobre e Carrinho */
 .cart-btn {
     background: var(--primary) !important;
     color: white !important;
-    padding: 12px 20px;
+    padding: 10px 15px;
     border-radius: 30px;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -71,6 +53,7 @@ h1 {
     transition: 0.3s;
     border: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    white-space: nowrap;
 }
 
 .cart-btn:hover {
@@ -79,11 +62,12 @@ h1 {
 }
 
 .cart-count {
+    background: red;
+    color: white;
     border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 12px;
-    margin-left: 10px;
-    font-weight: 800;
+    padding: 2px 6px;
+    font-size: 11px;
+    margin-left: 5px;
 }
 
 /* --- CARDS DE PRODUTOS --- */
@@ -104,10 +88,6 @@ h1 {
     transition: 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-}
-
 .card img {
     width: 100%;
     height: 200px;
@@ -120,50 +100,18 @@ h1 {
     color: var(--text);
 }
 
-.price {
-    color: var(--primary);
-    font-size: 20px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
 .card-content button {
     width: 100%;
     padding: 12px;
     border: none;
     border-radius: 12px;
-    background: #ff4b2b; /* Cor de destaque para o botão de compra */
+    background: #ff4b2b;
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-/* --- CARRINHO (MODAL E OVERLAY) --- */
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 10px;
-    background: var(--primary);
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-.cart-count {
-    background: red;
-    border-radius: 50%;
-    padding: 4px 8px;
-    font-size: 12px;
-    margin-left: 5px;
-}
-
+/* --- CARRINHO MODAL --- */
 .overlay {
     position: fixed;
     inset: 0;
@@ -171,7 +119,7 @@ button:hover {
     opacity: 0;
     visibility: hidden;
     transition: 0.3s;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .overlay.active {
@@ -183,79 +131,77 @@ button:hover {
     position: fixed;
     right: -400px;
     top: 0;
-    width: 350px;
+    width: 320px;
     height: 100%;
     background: var(--card);
-    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
     padding: 20px;
     transition: 0.3s;
-    overflow-y: auto;
     color: var(--text);
-    z-index: 1002;
+    z-index: 2001;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
 }
 
 .cart-modal.active {
     right: 0;
 }
 
-.close-cart {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.cart-item {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-}
-
-.qty-control {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.qty-control button {
-    width: 30px;
-    padding: 5px;
-}
-
-@media(max-width:768px){
-    .container{
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
+/* --- PÁGINA SOBRE --- */
 .about-page-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente */
-    align-items: center;     /* Centraliza horizontalmente */
-    min-height: 80vh;        /* Ocupa quase a tela toda para o centro ficar visível */
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
     padding: 20px;
 }
 
 .about-content {
-    max-width: 800px;        /* Largura máxima do bloco de texto */
+    max-width: 800px;
     color: var(--text);
 }
 
 .about-content h2 {
     text-align: center;
-    font-size: 3rem;         /* Título bem grande */
-    font-weight: 800;        /* Título bem grosso */
-    margin-bottom: 40px;
-    color: var(--primary);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: var(--text);
 }
 
 .about-content p {
-    font-size: 1.5rem;       /* Fonte grande */
-    font-weight: 600;        /* Fonte grossa */
-    line-height: 1.8;        /* Espaçamento para não embolar */
-    text-align: justify;     /* Texto JUSTIFICADO */
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.6;
+    text-align: justify;
     margin-bottom: 25px;
+}
+
+/* --- AJUSTES PARA CELULAR (MOBILE) --- */
+@media (max-width: 768px) {
+    h1 {
+        padding-top: 80px; /* Dá espaço para os botões fixos */
+        font-size: 1.5rem;
+    }
+
+    .nav-container {
+        top: 10px;
+        right: 0;
+        left: 0;
+        justify-content: center;
+        gap: 5px;
+        padding: 0 5px;
+    }
+
+    .cart-btn {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .about-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .about-content p {
+        font-size: 1.1rem;
+    }
 }
