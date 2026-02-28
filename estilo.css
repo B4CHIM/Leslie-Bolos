@@ -1,7 +1,6 @@
-/* --- VARIÁVEIS E CORES --- */
 :root {
-    --bg: linear-gradient(135deg, #fff1eb, #ace0f9);
-    --card: #ffffff;
+    --bg: linear-gradient(135deg, #f5d5eb, #fa97da);
+    --card: #f5d5eb;
     --text: #000000;
     --primary: #333; 
     --hover: #444;
@@ -13,7 +12,6 @@
     --text: #ffffff;
 }
 
-/* --- RESET E BODY --- */
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -29,7 +27,6 @@ h1 {
     margin: 0;
 }
 
-/* --- NAVEGAÇÃO SUPERIOR (RESPONSIVA) --- */
 .nav-container {
     position: fixed;
     top: 20px;
@@ -45,7 +42,7 @@ h1 {
     padding: 10px 15px;
     border-radius: 30px;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -62,7 +59,7 @@ h1 {
 }
 
 .cart-count {
-    background: red;
+    background: #ff4b2b;
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -70,7 +67,6 @@ h1 {
     margin-left: 5px;
 }
 
-/* --- CARDS DE PRODUTOS --- */
 .container {
     display: flex;
     justify-content: center;
@@ -86,6 +82,11 @@ h1 {
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     transition: 0.3s;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .card img {
@@ -104,14 +105,28 @@ h1 {
     width: 100%;
     padding: 12px;
     border: none;
-    border-radius: 12px;
+    border-radius: 100px;
     background: #ff4b2b;
     color: white;
     font-weight: bold;
+    font-size: 18px;
     cursor: pointer;
 }
 
-/* --- CARRINHO MODAL --- */
+.cart-item strong {
+    font-weight: 600 !important;
+    font-size: 24px !important;
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.cart-item {
+    font-weight: 600 !important;
+    font-size: 20px !important;
+    color: var(--text);
+}
+
 .overlay {
     position: fixed;
     inset: 0;
@@ -141,11 +156,77 @@ h1 {
     box-shadow: -5px 0 15px rgba(0,0,0,0.2);
 }
 
+.cart-modal button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 1px;
+    border: none;
+    border-radius: 12px;
+    background: #ff4b2b;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+
 .cart-modal.active {
     right: 0;
 }
 
-/* --- PÁGINA SOBRE --- */
+.qty-control {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items:baseline !important;
+    gap: 12px !important;
+    margin: 10px 0 !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    color: var(--text) !important;
+}
+
+.qty-control button {
+    width: 35px !important;
+    height: 35px !important;
+    min-width: 35px !important;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    background: #ff4b2b !important;
+    color: white !important;
+    font-size: 18px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: none !important;
+}
+
+.cart-item > button {
+    width: 100% !important;
+    background: #ff4b2b !important;
+    margin-top: 10px !important;
+    padding: 8px !important;
+    border-radius: 100px !important;
+    font-size: 14px !important;
+}
+
+.cart-modal > button {
+    width: 100% !important;
+    background: #ff4b2b !important;
+    padding: 15px !important;
+    margin-top: 20px !important;
+    border-radius: 100px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+}
+
+.cart-modal button:hover {
+    filter: brightness(0.9);
+    transform: scale(1.02);
+}
+
 .about-page-container {
     display: flex;
     flex-direction: column;
@@ -176,10 +257,50 @@ h1 {
     margin-bottom: 25px;
 }
 
+.payment-options {
+    margin: 20px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    color: var(--text) !important;
+}
+
+.payment-options p {
+    font-weight: bold !important;
+    margin-bottom: 5px !important;
+}
+
+.payment-options input[type="radio"] {
+    display: none !important;
+}
+
+.payment-options label {
+    display: block !important;
+    padding: 12px !important;
+    background: var(--card) !important;
+    border: 2px solid #ff4b2b !important;
+    border-radius: 100px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    transition: 0.3s !important;
+    color: var(--text) !important;
+}
+
+.payment-options input[type="radio"]:checked + span, 
+.payment-options label:has(input:checked) {
+    background: #ff4b2b !important;
+    color: white !important;
+}
+
+.payment-options label:hover {
+    background: rgba(255, 75, 43, 0.1) !important;
+}
+
 /* --- AJUSTES PARA CELULAR (MOBILE) --- */
 @media (max-width: 768px) {
     h1 {
-        padding-top: 80px; /* Dá espaço para os botões fixos */
+        padding-top: 80px;
         font-size: 1.5rem;
     }
 

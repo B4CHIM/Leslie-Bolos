@@ -1,99 +1,123 @@
-let cart = [];
+let carrinho = [];
 
-// Função que liga/desliga o modo escuro e salva no navegador
-function toggleDark() {
-    const isDark = document.body.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+function toggleCart() {
+    document.getElementById("cartModal").classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
 }
 
-// Verifica se o modo escuro estava ligado ao carregar qualquer página
-document.addEventListener("DOMContentLoaded", function() {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark");
-    }
+function toggleDark() {
+    const isDark = document.body.classList.toggle("dark");
+    // Salva a escolha (true ou false) no navegador
+    localStorage.setItem("darkMode", isDark);
+}
 
-    // Configuração do overlay para fechar o carrinho ao clicar fora
-    const overlay = document.getElementById("overlay");
-    if (overlay) {
-        overlay.addEventListener("click", toggleCart);
+// 🔒 EXECUTA ASSIM QUE A PÁGINA CARREGA
+document.addEventListener("DOMContentLoaded", function() {
+    // Verifica se o usuário já tinha deixado o modo escuro ativo
+    const darkModeSaved = localStorage.getItem("darkMode");
+
+    if (darkModeSaved === "true") {
+        document.body.classList.add("dark");
     }
 });
 
-// --- FUNÇÕES DO CARRINHO ---
-function addToCart(name, price) {
-    let item = cart.find(i => i.name === name);
-    if (item) {
-        item.qty++;
+function addToCart(nome, preco) {
+
+    const produtoExistente = carrinho.find(item => item.nome === nome);
+
+    if (produtoExistente) {
+        produtoExistente.quantidade++;
     } else {
-        cart.push({ name, price, qty: 1 });
+        carrinho.push({
+            nome: nome,
+            preco: preco,
+            quantidade: 1
+        });
     }
-    updateCart();
+
+    atualizarCarrinho();
 }
 
-function updateCart() {
-    const cartItems = document.getElementById("cartItems");
-    const cartCount = document.getElementById("cartCount");
-    const totalDisplay = document.getElementById("total");
+function aumentar(index) {
+    carrinho[index].quantidade++;
+    atualizarCarrinho();
+}
 
-    if (!cartItems) return;
+function diminuir(index) {
+    if (carrinho[index].quantidade > 1) {
+        carrinho[index].quantidade--;
+    } else {
+        carrinho.splice(index, 1);
+    }
+    atualizarCarrinho();
+}
+
+function remover(index) {
+    carrinho.splice(index, 1);
+    atualizarCarrinho();
+}
+
+function atualizarCarrinho() {
+
+    const cartItems = document.getElementById("cartItems");
+    const totalElement = document.getElementById("total");
+    const cartCount = document.getElementById("cartCount");
 
     cartItems.innerHTML = "";
-    let total = 0;
-    let count = 0;
 
-    cart.forEach((item, index) => {
-        total += item.price * item.qty;
-        count += item.qty;
-        cartItems.innerHTML += `
-        <div class="cart-item">
-            <strong>${item.name}</strong><br>
-            R$ ${item.price},00
+    let total = 0;
+    let quantidadeTotal = 0;
+
+    carrinho.forEach((produto, index) => {
+
+        total += produto.preco * produto.quantidade;
+        quantidadeTotal += produto.quantidade;
+
+        const item = document.createElement("div");
+        item.classList.add("cart-item");
+
+        item.innerHTML = `
+            <p><strong>${produto.nome}</strong></p>
+            <p>R$ ${produto.preco.toFixed(2)}</p>
+
             <div class="qty-control">
-                <button onclick="changeQty(${index}, -1)">-</button>
-                ${item.qty}
-                <button onclick="changeQty(${index}, 1)">+</button>
+                <button class="qty-btn" onclick="diminuir(${index})">-</button>
+                <span class="qty-number">${produto.quantidade}</span>
+                <button class="qty-btn" onclick="aumentar(${index})">+</button>
             </div>
-            <button onclick="removeItem(${index})">Remover</button>
-        </div>`;
+
+            <button class="remove-btn" onclick="remover(${index})">
+                Remover
+            </button>
+            <hr>
+        `;
+
+        cartItems.appendChild(item);
     });
 
-    if (cartCount) cartCount.innerText = count;
-    if (totalDisplay) totalDisplay.innerText = "Total: R$ " + total + ",00";
-}
-
-function changeQty(index, change) {
-    cart[index].qty += change;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
-    updateCart();
-}
-
-function removeItem(index) {
-    cart.splice(index, 1);
-    updateCart();
-}
-
-function toggleCart() {
-    const modal = document.getElementById("cartModal");
-    const overlay = document.getElementById("overlay");
-    if (modal && overlay) {
-        modal.classList.toggle("active");
-        overlay.classList.toggle("active");
-    }
+    totalElement.innerText = "Total: R$ " + total.toFixed(2);
+    cartCount.innerText = quantidadeTotal;
 }
 
 function finalizarPedido() {
-    if (cart.length === 0) {
+
+    if (carrinho.length === 0) {
         alert("Seu carrinho está vazio!");
         return;
     }
-    let pagamento = document.querySelector('input[name="pagamento"]:checked').value;
-    let mensagem = "Olá! Gostaria de fazer o pedido:%0A";
+
+    let mensagem = "Olá, gostaria de fazer o pedido:%0A%0A";
     let total = 0;
-    cart.forEach(item => {
-        mensagem += `- ${item.name} (x${item.qty})%0A`;
-        total += item.price * item.qty;
+
+    carrinho.forEach(produto => {
+        mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$ ${(produto.preco * produto.quantidade).toFixed(2)}%0A`;
+        total += produto.preco * produto.quantidade;
     });
-    mensagem += `%0ATotal: R$ ${total},00%0AForma de pagamento: ${pagamento}`;
-    window.open(`https://wa.me/5517992245879?text=${mensagem}`);
+
+    const pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+
+    mensagem += `%0AForma de pagamento: ${pagamento}`;
+    mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
+
+    window.open(`https://wa.me/5517992245879?text=${mensagem}`, "_blank");
 }

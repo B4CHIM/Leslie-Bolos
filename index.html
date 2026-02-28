@@ -40,7 +40,7 @@
             <div class="card-content">
                 <h2>Bolo de Chocolate</h2>
                 <p class="price">R$ 22,00</p>
-                <button onclick="addToCart('Bolo de Chocolate', 22)">Adicionar</button>
+                <button onclick="addToCart('Chocolate', 22)">Adicionar</button>
             </div>
         </div>
         <div class="card">
@@ -54,7 +54,7 @@
         <div class="card">
             <img src="imagens/fubacomgoiabada.png">
             <div class="card-content">
-                <h2>Bolo de Fubá com Goiabada</h2>
+                <h2>Bolo de Fubá c/ Goiabada</h2>
                 <p class="price">R$ 25,00</p>
                 <button onclick="addToCart('Bolo de Fubá com Goiabada', 25)">Adicionar</button>
             </div>
@@ -75,20 +75,114 @@
                 <button onclick="addToCart('Bolo de Iogurte', 20)">Adicionar</button>
             </div>
         </div>
+        <div class="card">
+            <img src="imagens/fubá.png">
+            <div class="card-content">
+                <h2>Bolo de Fubá</h2>
+                <p class="price">R$ 20,00</p>
+                <button onclick="addToCart('Bolo de Fubá', 20)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/limão.png">
+            <div class="card-content">
+                <h2>Bolo de Limão</h2>
+                <p class="price">R$ 20,00</p>
+                <button onclick="addToCart('Bolo de Limão', 20)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/coco.png">
+            <div class="card-content">
+                <h2>Bolo de Coco</h2>
+                <p class="price">R$ 20,00</p>
+                <button onclick="addToCart('Bolo de Coco', 20)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/formigueiro.png">
+            <div class="card-content">
+                <h2>Bolo de Formigueiro</h2>
+                <p class="price">R$ 20,00</p>
+                <button onclick="addToCart('Bolo de Fubá com Formigueiro', 20)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/ninho.png">
+            <div class="card-content">
+                <h2>Bolo de Ninho</h2>
+                <p class="price">R$ 20,00</p>
+                <button onclick="addToCart('Bolo de Ninho', 20)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/mesclado.png">
+            <div class="card-content">
+                <h2>Bolo Mesclado</h2>
+                <p class="price">R$ 22,00</p>
+                <button onclick="addToCart('Bolo Mesclado', 22)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/ovomaltine.png">
+            <div class="card-content">
+                <h2>Bolo de Ovomaltine</h2>
+                <p class="price">R$ 24,00</p>
+                <button onclick="addToCart('Bolo de Ovomaltine', 24)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/fubacremoso.png">
+            <div class="card-content">
+                <h2>Bolo de Fubá Cremoso</h2>
+                <p class="price">R$ 28,00</p>
+                <button onclick="addToCart('Bolo de Fubá Cremoso', 28)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/maçacanela.png">
+            <div class="card-content">
+                <h2>Bolo de Maçã com Canela</h2>
+                <p class="price">R$ 30,00</p>
+                <button onclick="addToCart('Bolo de Maçã com Canela', 30)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/banana.png">
+            <div class="card-content">
+                <h2>Bolo de Banana Caramelizada</h2>
+                <p class="price">R$ 30,00</p>
+                <button onclick="addToCart('Bolo de Banana Caramelizada', 30)">Adicionar</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="imagens/pamonha.png">
+            <div class="card-content">
+                <h2>Bolo de Pamonha</h2>
+                <p class="price">R$ 33,00</p>
+                <button onclick="addToCart('Bolo de Pamonha', 33)">Adicionar</button>
+            </div>
+        </div>
     </div>
 </section>
 
-<div class="overlay" id="overlay"></div>
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
 <div class="cart-modal" id="cartModal">
     <h2>Seu Carrinho</h2>
     <div id="cartItems"></div>
     <h3 id="total">Total: R$ 0,00</h3>
     <div class="payment-options">
-        <p>Forma de pagamento:</p>
-        <label><input type="radio" name="pagamento" value="PIX" checked> PIX</label>
-        <label><input type="radio" name="pagamento" value="Dinheiro"> Dinheiro</label>
-    </div>
+    <p>Forma de pagamento:</p>
+    <label>
+        <input type="radio" name="pagamento" value="PIX" checked>
+        <span>💰 PIX</span>
+    </label>
+    <label>
+        <input type="radio" name="pagamento" value="Dinheiro">
+        <span>💵 Dinheiro</span>
+    </label>
+</div>
     <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
 </div>
 
