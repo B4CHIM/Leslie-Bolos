@@ -311,12 +311,24 @@ h1 {
     z-index: 999;
 }
 
+/* --- AJUSTE NO RESUMO PARA SUPORTAR TEMAS --- */
 .resumo-box {
-    background: #2b2b2b;
+    background: var(--card); /* Usa a cor do card definida no tema */
     padding: 20px;
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
+    color: var(--text); /* Garante que o texto mude de cor */
+    border: 1px solid rgba(0,0,0,0.1); /* Opcional: uma borda leve para destaque */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Ajuste nos parágrafos do resumo para garantir visibilidade */
+#resumoConteudo p {
+    margin: 10px 0;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    padding-bottom: 5px;
 }
 
 .resumo-botoes {
