@@ -182,7 +182,39 @@
         <input type="radio" name="pagamento" value="Dinheiro">
         <span>💵 Dinheiro</span>
     </label>
+
+    <div class="delivery-options">
+    <p>Forma de entrega:</p>
+
+    <label>
+        <input type="radio" name="entrega" value="Retirada" checked>
+        <span>🏠 Retirar no Local</span>
+    </label>
+
+    <label>
+        <input type="radio" name="entrega" value="Entrega">
+        <span>🚚 Entega</span>
+    </label>
 </div>
+</div>
+
+<div class="resumo-modal" id="resumoModal">
+    <div class="resumo-box">
+        <h2>🧾 Confirmar Pedido</h2>
+        <div id="resumoConteudo"></div>
+
+        <div class="resumo-botoes">
+            <button onclick="confirmarEnvio()">Confirmar</button>
+            <button onclick="fecharResumo()" class="cancelar">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="enderecoBox" style="display:none; margin-top:10px;">
+    <input type="text" id="cep" placeholder="Digite seu CEP (somente números)" 
+    style="width:95%; padding:8px; border-radius:8px; border:1px solid #ccc;">
+</div>
+
     <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
 </div>
 

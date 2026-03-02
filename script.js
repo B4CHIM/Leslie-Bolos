@@ -1,34 +1,52 @@
-let carrinho = [];
+function calcularFretePorCep(cep) {
 
-function toggleCart() {
-    document.getElementById("cartModal").classList.toggle("active");
-    document.getElementById("overlay").classList.toggle("active");
-}
+    cep = cep.replace(/\D/g, "");
 
-function toggleDark() {
-    const isDark = document.body.classList.toggle("dark");
-    // Salva a escolha (true ou false) no navegador
-    localStorage.setItem("darkMode", isDark);
-}
+    if (cep.length !== 8) return null;
 
-// 🔒 EXECUTA ASSIM QUE A PÁGINA CARREGA
-document.addEventListener("DOMContentLoaded", function() {
-    // Verifica se o usuário já tinha deixado o modo escuro ativo
-    const darkModeSaved = localStorage.getItem("darkMode");
+    let prefixo5 = parseInt(cep.substring(0, 5));
 
-    if (darkModeSaved === "true") {
-        document.body.classList.add("dark");
+    // Centro
+    if (prefixo5 >= 15010 && prefixo5 <= 15025) {
+        return 5;
     }
-});
 
+    // Redentora / Boa Vista
+    if (prefixo5 >= 15040 && prefixo5 <= 15057) {
+        return 6;
+    }
+
+    // Zona Norte
+    if (prefixo5 >= 15085 && prefixo5 <= 15092) {
+        return 8;
+    }
+
+    // Zona Sul / Iguatemi
+    if (prefixo5 >= 15093 && prefixo5 <= 15099) {
+        return 9;
+    }
+
+    // Região 151xx
+    if (prefixo5 >= 15100 && prefixo5 <= 15109) {
+        return 10;
+    }
+
+    return null;
+}
+
+const telefone = "5517992245879";
+
+let cart = [];
+let total = 0;
+
+// CARRINHO
 function addToCart(nome, preco) {
+    let itemExistente = cart.find(item => item.nome === nome);
 
-    const produtoExistente = carrinho.find(item => item.nome === nome);
-
-    if (produtoExistente) {
-        produtoExistente.quantidade++;
+    if (itemExistente) {
+        itemExistente.quantidade++;
     } else {
-        carrinho.push({
+        cart.push({
             nome: nome,
             preco: preco,
             quantidade: 1
@@ -38,86 +56,172 @@ function addToCart(nome, preco) {
     atualizarCarrinho();
 }
 
+function atualizarCarrinho() {
+    let cartItems = document.getElementById("cartItems");
+    let cartCount = document.getElementById("cartCount");
+    let totalElement = document.getElementById("total");
+
+    cartItems.innerHTML = "";
+    total = 0;
+    let quantidadeTotal = 0;
+
+    cart.forEach((item, index) => {
+        total += item.preco * item.quantidade;
+        quantidadeTotal += item.quantidade;
+
+        cartItems.innerHTML += `
+            <div class="cart-item">
+                <div>
+                    <strong>${item.nome}</strong>
+                    <div class="qty-control">
+                        <button onclick="diminuir(${index})">-</button>
+                        <span>${item.quantidade}</span>
+                        <button onclick="aumentar(${index})">+</button>
+                    </div>
+                </div>
+                <span>R$ ${(item.preco * item.quantidade).toFixed(2)}</span>
+            </div>
+        `;
+    });
+
+    cartCount.innerText = quantidadeTotal;
+    totalElement.innerText = "Total: R$ " + total.toFixed(2);
+}
+
 function aumentar(index) {
-    carrinho[index].quantidade++;
+    cart[index].quantidade++;
     atualizarCarrinho();
 }
 
 function diminuir(index) {
-    if (carrinho[index].quantidade > 1) {
-        carrinho[index].quantidade--;
+    if (cart[index].quantidade > 1) {
+        cart[index].quantidade--;
     } else {
-        carrinho.splice(index, 1);
+        cart.splice(index, 1);
     }
     atualizarCarrinho();
 }
 
-function remover(index) {
-    carrinho.splice(index, 1);
-    atualizarCarrinho();
+function toggleCart() {
+    document.getElementById("cartModal").classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
 }
 
-function atualizarCarrinho() {
-
-    const cartItems = document.getElementById("cartItems");
-    const totalElement = document.getElementById("total");
-    const cartCount = document.getElementById("cartCount");
-
-    cartItems.innerHTML = "";
-
-    let total = 0;
-    let quantidadeTotal = 0;
-
-    carrinho.forEach((produto, index) => {
-
-        total += produto.preco * produto.quantidade;
-        quantidadeTotal += produto.quantidade;
-
-        const item = document.createElement("div");
-        item.classList.add("cart-item");
-
-        item.innerHTML = `
-            <p><strong>${produto.nome}</strong></p>
-            <p>R$ ${produto.preco.toFixed(2)}</p>
-
-            <div class="qty-control">
-                <button class="qty-btn" onclick="diminuir(${index})">-</button>
-                <span class="qty-number">${produto.quantidade}</span>
-                <button class="qty-btn" onclick="aumentar(${index})">+</button>
-            </div>
-
-            <button class="remove-btn" onclick="remover(${index})">
-                Remover
-            </button>
-            <hr>
-        `;
-
-        cartItems.appendChild(item);
-    });
-
-    totalElement.innerText = "Total: R$ " + total.toFixed(2);
-    cartCount.innerText = quantidadeTotal;
+function toggleDark() {
+    const isDark = document.body.classList.toggle("dark");
+    localStorage.setItem("darkMode", isDark);
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const darkModeSaved = localStorage.getItem("darkMode");
+
+    if (darkModeSaved === "true") {
+        document.body.classList.add("dark");
+    }
+});
+// MOSTRAR CAMPO CEP
+document.addEventListener("change", function (e) {
+    if (e.target.name === "entrega") {
+        let enderecoBox = document.getElementById("enderecoBox");
+
+        if (e.target.value === "Entrega") {
+            enderecoBox.style.display = "block";
+        } else {
+            enderecoBox.style.display = "none";
+        }
+    }
+});
+// FINALIZAR PEDIDO
+let dadosPedidoTemp = {};
 
 function finalizarPedido() {
 
-    if (carrinho.length === 0) {
+    if (cart.length === 0) {
         alert("Seu carrinho está vazio!");
         return;
     }
 
-    let mensagem = "Olá, gostaria de fazer o pedido:%0A%0A";
-    let total = 0;
+    let pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+    let entrega = document.querySelector('input[name="entrega"]:checked').value;
 
-    carrinho.forEach(produto => {
-        mensagem += `- ${produto.nome} (${produto.quantidade}x) - R$ ${(produto.preco * produto.quantidade).toFixed(2)}%0A`;
-        total += produto.preco * produto.quantidade;
+    let frete = 0;
+    let cepInformado = "";
+
+    if (entrega === "Entrega") {
+
+        cepInformado = document.getElementById("cep").value;
+
+        if (cepInformado.trim() === "") {
+            alert("Digite seu CEP.");
+            return;
+        }
+
+        frete = calcularFretePorCep(cepInformado);
+
+        if (frete === null) {
+            alert("Ainda não entregamos nessa região.");
+            return;
+        }
+    }
+
+    let totalFinal = total + frete;
+
+    // Guardar temporariamente
+    dadosPedidoTemp = {
+        pagamento,
+        entrega,
+        frete,
+        cepInformado,
+        totalFinal
+    };
+
+    mostrarResumo();
+}
+
+function mostrarResumo() {
+
+    let resumo = document.getElementById("resumoConteudo");
+
+    let html = "";
+
+    cart.forEach(item => {
+        html += `<p>${item.nome} (${item.quantidade}x) - R$ ${(item.preco * item.quantidade).toFixed(2)}</p>`;
     });
 
-    const pagamento = document.querySelector('input[name="pagamento"]:checked').value;
+    if (dadosPedidoTemp.entrega === "Entrega") {
+        html += `<p>📦 CEP: ${dadosPedidoTemp.cepInformado}</p>`;
+        html += `<p>🚚 Frete: R$ ${dadosPedidoTemp.frete.toFixed(2)}</p>`;
+    }
 
-    mensagem += `%0AForma de pagamento: ${pagamento}`;
-    mensagem += `%0ATotal: R$ ${total.toFixed(2)}`;
+    html += `<p><strong>Total: R$ ${dadosPedidoTemp.totalFinal.toFixed(2)}</strong></p>`;
+    html += `<p>💰 Pagamento: ${dadosPedidoTemp.pagamento}</p>`;
 
-    window.open(`https://wa.me/5517992245879?text=${mensagem}`, "_blank");
+    resumo.innerHTML = html;
+
+    document.getElementById("resumoModal").style.display = "flex";
+}
+
+function fecharResumo() {
+    document.getElementById("resumoModal").style.display = "none";
+}
+
+function confirmarEnvio() {
+
+    let mensagem = "🍰 *Pedido - Leslie Bolos* %0A%0A";
+
+    cart.forEach(item => {
+        mensagem += `- ${item.nome} (${item.quantidade}x) - R$ ${(item.preco * item.quantidade).toFixed(2)} %0A`;
+    });
+
+    if (dadosPedidoTemp.entrega === "Entrega") {
+        mensagem += `%0A📦 CEP: ${dadosPedidoTemp.cepInformado}`;
+        mensagem += `%0A🚚 Frete: R$ ${dadosPedidoTemp.frete.toFixed(2)}`;
+    }
+
+    mensagem += `%0A%0A💰 Pagamento: ${dadosPedidoTemp.pagamento}`;
+    mensagem += `%0A🧾 Total: R$ ${dadosPedidoTemp.totalFinal.toFixed(2)}`;
+
+    let url = "https://wa.me/5517992245879?text=" + mensagem;
+
+    window.location.href = url;
 }

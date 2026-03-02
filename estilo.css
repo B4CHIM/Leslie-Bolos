@@ -297,6 +297,49 @@ h1 {
     background: rgba(255, 75, 43, 0.1) !important;
 }
 
+.delivery-options label{
+    margin-top: 10px;
+}
+
+.resumo-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.resumo-box {
+    background: #2b2b2b;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.resumo-botoes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.resumo-botoes button {
+    flex: 1;
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 80px;
+    cursor: pointer;
+    background: #ff7a00;
+    color: white;
+}
+
+.resumo-botoes .cancelar {
+    background: #999;
+}
+
 /* --- AJUSTES PARA CELULAR (MOBILE) --- */
 @media (max-width: 768px) {
     h1 {
